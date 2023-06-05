@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessObject", "BusinessObject\BusinessObject.csproj", "{EA758B14-7E57-4E34-93A0-4C8E31ACC27C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAsset", "DataAsset\DataAsset.csproj", "{DF36E868-E0DE-4059-A923-45209C51911A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EA758B14-7E57-4E34-93A0-4C8E31ACC27C} = {EA758B14-7E57-4E34-93A0-4C8E31ACC27C}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA758B14-7E57-4E34-93A0-4C8E31ACC27C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA758B14-7E57-4E34-93A0-4C8E31ACC27C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA758B14-7E57-4E34-93A0-4C8E31ACC27C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA758B14-7E57-4E34-93A0-4C8E31ACC27C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF36E868-E0DE-4059-A923-45209C51911A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF36E868-E0DE-4059-A923-45209C51911A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF36E868-E0DE-4059-A923-45209C51911A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF36E868-E0DE-4059-A923-45209C51911A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1303AFE6-2193-4A51-939F-3696EC386CA6}
+	EndGlobalSection
+EndGlobal
