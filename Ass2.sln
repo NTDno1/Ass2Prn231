@@ -3,10 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessObject", "BusinessObject\BusinessObject.csproj", "{EA758B14-7E57-4E34-93A0-4C8E31ACC27C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessObject", "BusinessObject\BusinessObject.csproj", "{EA758B14-7E57-4E34-93A0-4C8E31ACC27C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAsset", "DataAsset\DataAsset.csproj", "{DF36E868-E0DE-4059-A923-45209C51911A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAsset", "DataAsset\DataAsset.csproj", "{DF36E868-E0DE-4059-A923-45209C51911A}"
 	ProjectSection(ProjectDependencies) = postProject
+		{EA758B14-7E57-4E34-93A0-4C8E31ACC27C} = {EA758B14-7E57-4E34-93A0-4C8E31ACC27C}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBookStore", "eBookStore\eBookStore.csproj", "{FFB5E28F-6E18-4245-B60B-CE4444968428}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DF36E868-E0DE-4059-A923-45209C51911A} = {DF36E868-E0DE-4059-A923-45209C51911A}
 		{EA758B14-7E57-4E34-93A0-4C8E31ACC27C} = {EA758B14-7E57-4E34-93A0-4C8E31ACC27C}
 	EndProjectSection
 EndProject
@@ -24,6 +30,10 @@ Global
 		{DF36E868-E0DE-4059-A923-45209C51911A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF36E868-E0DE-4059-A923-45209C51911A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF36E868-E0DE-4059-A923-45209C51911A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFB5E28F-6E18-4245-B60B-CE4444968428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFB5E28F-6E18-4245-B60B-CE4444968428}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFB5E28F-6E18-4245-B60B-CE4444968428}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFB5E28F-6E18-4245-B60B-CE4444968428}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
