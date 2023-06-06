@@ -20,6 +20,7 @@ namespace DataAsset
             builder.Services.AddScoped<Assignment2Context>();
             builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
             builder.Services.AddScoped<IBookRepository, BookRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

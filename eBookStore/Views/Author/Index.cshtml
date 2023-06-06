@@ -1,0 +1,18 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHeplers
+@using BusinessObject.Models
+@model List<Author>
+
+List Category:
+<table border="1">
+    <tr>
+        <td>CategoryId</td>
+        <td>CategoryName</td>
+    </tr>
+    @foreach (Author item in Model)
+    {
+        <tr>
+            <td><a asp-action="Update" asp-route-id="@item.AuthorId">@item.AuthorId</a></td>
+            <td>@item.FirstName</td>
+        </tr>
+    }
+</table>

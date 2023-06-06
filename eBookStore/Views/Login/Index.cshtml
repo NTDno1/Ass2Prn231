@@ -1,0 +1,27 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHeplers
+@using BusinessObject.Models
+@model User
+
+<form asp-action="GetUser" method="post">
+    <!-- Email input -->
+    <div class="form-outline mb-4">
+        <input name="email" type="email" id="form2Example1" class="form-control" />
+        <label class="form-label" for="form2Example1">Email address</label>
+    </div>
+
+    <!-- Password input -->
+    <div class="form-outline mb-4">
+        <input name="pass" type="password" id="form2Example2" class="form-control" />
+        <label class="form-label" for="form2Example2">Password</label>
+    </div>
+    @if (ViewData["Error"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewData["Error"]
+        </div>
+    }
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary btn-block mb-4">Đăng Nhập</button>
+    <a asp-action="SignUp">SignUp</a>
+    <!-- Register buttons -->
+</form>
