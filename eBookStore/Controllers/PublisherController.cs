@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessObject.Models;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using BusinessObject.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace eBookStore.Controllers
 {
-    public class AuthorController : Controller
+    public class PublisherController : Controller
     {
-        public async Task<IActionResult> Index()
+        public async Task< IActionResult> Index()
         {
             string name = HttpContext.Session.GetString("Name");
             if (name == null)
@@ -16,9 +15,9 @@ namespace eBookStore.Controllers
             }
             else
             {
-                List<Author> author = new List<Author>();
+                List<Publisher> publishers = new List<Publisher>();
 
-                string link = "https://localhost:7263/api/Authors";
+                string link = "https://localhost:7263/api/Publishers";
 
                 using (HttpClient client = new HttpClient())
                 {
@@ -27,12 +26,11 @@ namespace eBookStore.Controllers
                         using (HttpContent content = res.Content)
                         {
                             string data = await content.ReadAsStringAsync();
-                            author = JsonConvert.DeserializeObject<List<Author>>(data);
-
+                            publishers = JsonConvert.DeserializeObject<List<Publisher>>(data);
                         }
                     }
                 }
-                return View(author);
+                return View(publishers);
             }
         }
         public async Task<IActionResult> Edit(int id)
@@ -44,10 +42,10 @@ namespace eBookStore.Controllers
             }
             else
             {
-                List<Author> authors = new List<Author>();
-                Author author = new Author();
+                List<Publisher> publishers = new List<Publisher>();
+                Publisher publisher = new Publisher();
 
-                string link = "https://localhost:7263/api/Authors";
+                string link = "https://localhost:7263/api/Publishers";
 
                 using (HttpClient client = new HttpClient())
                 {
@@ -56,22 +54,22 @@ namespace eBookStore.Controllers
                         using (HttpContent content = res.Content)
                         {
                             string data = await content.ReadAsStringAsync();
-                            authors = JsonConvert.DeserializeObject<List<Author>>(data);
+                            publishers = JsonConvert.DeserializeObject<List<Publisher>>(data);
                         }
                     }
-                    using (HttpResponseMessage res = await client.GetAsync(link+"/"+id))
+                    using (HttpResponseMessage res = await client.GetAsync(link + "/" + id))
                     {
                         using (HttpContent content = res.Content)
                         {
                             string data = await content.ReadAsStringAsync();
-                            author = JsonConvert.DeserializeObject<Author>(data);
+                            publisher = JsonConvert.DeserializeObject<Publisher>(data);
                         }
                     }
                 }
 
                 ViewData["Error"] = "Edit";
-                ViewBag.Author = author;
-                return View("Index",authors);
+                ViewBag.Publisher = publisher;
+                return View("Index", publishers);
 
             }
         }
@@ -84,13 +82,13 @@ namespace eBookStore.Controllers
             }
             else
             {
-                List<Author> authors = new List<Author>();
+                List<Publisher> publishers = new List<Publisher>();
 
-                string link = "https://localhost:7263/api/Authors";
+                string link = "https://localhost:7263/api/Publishers";
 
                 using (HttpClient client = new HttpClient())
                 {
-                    using (HttpResponseMessage res = await client.DeleteAsync(link+"?id="+id))
+                    using (HttpResponseMessage res = await client.DeleteAsync(link + "/" + id))
                     {
                         if (res.IsSuccessStatusCode)
                         {
@@ -99,10 +97,10 @@ namespace eBookStore.Controllers
                                 using (HttpContent content = ress.Content)
                                 {
                                     string data = await content.ReadAsStringAsync();
-                                    authors = JsonConvert.DeserializeObject<List<Author>>(data);
+                                    publishers = JsonConvert.DeserializeObject<List<Publisher>>(data);
                                 }
                             }
-                            return View("Index", authors);
+                            return View("Index", publishers);
                         }
                         else
                         {
@@ -112,6 +110,5 @@ namespace eBookStore.Controllers
                 }
             }
         }
-
     }
 }

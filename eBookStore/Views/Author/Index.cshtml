@@ -19,7 +19,7 @@
 List Author:
 <table border="1">
     <tr>
-        <td>AuthorId<br /><input type="text" name="id"/></td>
+        <td>AuthorId<br /><input type="text" id="myInput" onkeydown="handleKeyDown(event)"/></td>
         <td>Firts Name<br /><input type="text" name="fname" /></td>
         <td>Last Name <br /><input type="text" name="lname" /></td>
         <td>City <br /><input type="text" name="fname" /></td>
@@ -38,7 +38,19 @@ List Author:
 </table>
 
 <script>
-    function clearForm() {
-        document.getElementById("myForm").reset();
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+            // Xử lý sự kiện khi người dùng bấm phím "Enter" ở đây
+            var inputValue = document.getElementById("myInput").value;
+            console.log("Enter pressed. Input value: " + inputValue);
+            event.preventDefault(); // Ngăn chặn hành vi mặc định của Enter (như gửi form)
+            handleInputChange(); // Gọi hàm xử lý onchange tương tự như khi thay đổi giá trị
+        }
+    }
+
+    function handleInputChange() {
+        // Xử lý sự kiện onchange ở đây
+        var inputValue = document.getElementById("myInput").value;
+        console.log("Input changed: " + inputValue);
     }
 </script>

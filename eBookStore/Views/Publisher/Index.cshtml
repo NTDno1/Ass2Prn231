@@ -1,0 +1,33 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHeplers
+@using BusinessObject.Models
+@model List<Publisher>
+@{
+    var publisher = ViewBag.Publisher as Publisher;
+}
+<form action="/action_page.php">
+    <label for="fname">First name:</label>
+    <input type="text" id="fname" name="fname" value="@(publisher != null ? publisher.PublisherName : "")"><br><br>
+    <label for="lname">Last name:</label>
+    <input type="text" id="lname" name="lname" value="@(publisher != null ? publisher.City : "")"><br><br>
+    <input type="submit" value="Submit">
+    <input type="button" value="Clear" id="myForm" onclick="clearForm()">
+</form>
+
+List Author:
+<table border="1">
+    <tr>
+        <td>PublisherId<br /><input type="text" id="myInput" onkeydown="handleKeyDown(event)" /></td>
+        <td>PublisherName<br /><input type="text" name="fname" /></td>
+        <td>City<br /><input type="text" name="lname" /></td>
+        <td>Action<br /> <b></b> </td>
+    </tr>
+    @foreach (Publisher item in Model)
+    {
+        <tr>
+            <td><a>@item.PubId</a></td>
+            <td>@item.PublisherName</td>
+            <td>@item.City</td>
+            <td><a asp-action="Delete" asp-route-id="@item.PubId">Delete</a>|<a asp-action="Edit" asp-route-id="@item.PubId">Edit</a></td>
+        </tr>
+    }
+</table>
