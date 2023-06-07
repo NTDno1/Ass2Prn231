@@ -32,23 +32,13 @@ namespace DataAsset.Controllers
             return  _context.getAll();
         }
 
-        //// GET: api/Authors/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Author>> GetAuthor(int id)
-        //{
-        //  if (_context.Authors == null)
-        //  {
-        //      return NotFound();
-        //  }
-        //    var author = await _context.Authors.FindAsync(id);
-
-        //    if (author == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return author;
-        //}
+        // GET: api/Authors/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Author>> GetAuthor(int id)
+        {
+            var users = _context.getAuthorid(id);
+            return users;
+        }
 
         //// PUT: api/Authors/5
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

@@ -15,5 +15,10 @@ namespace DataAsset.Repository
             List<Author> books = _db.Authors.ToList();
             return books;
         }
+        public Author getAuthorid(int id)
+        {
+            Author author = _db.Authors.FirstOrDefault(u => u.AuthorId == id);
+            return author;
+        }
     }
 }

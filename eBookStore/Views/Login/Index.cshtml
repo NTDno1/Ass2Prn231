@@ -20,6 +20,12 @@
             @ViewData["Error"]
         </div>
     }
+    @if (ViewData["SignUp"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewData["SignUp"]
+        </div>
+    }
     <!-- Submit button -->
     <button type="submit" class="btn btn-primary btn-block mb-4">Đăng Nhập</button>
     <a asp-action="SignUp">SignUp</a>

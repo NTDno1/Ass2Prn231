@@ -10,7 +10,7 @@ namespace eBookStore.Controllers
     {
         public IActionResult Index(string mess)
         {
-            ViewData["Error"] = "Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin đăng nhập.";
+            //ViewData["Error"] = "Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin đăng nhập.";
                 return View();
         }
         [HttpPost]
@@ -49,26 +49,39 @@ namespace eBookStore.Controllers
         {
             if (!pass.Equals(repass))
             {
-                ViewData["Error"] = "Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin đăng nhập.";
+                ViewData["Error"] = "Vui Lòng Kiểm Tra Lại Thông Tin Đăng Nhập";
                 return View("SignUp");
             }
-            string link = "http://localhost:5242/api/Category";
-            //using (HttpClient client = new HttpClient())
-            //{
-            //    using (HttpResponseMessage res = await client.PostAsJsonAsync(link))
-            //    {
-            //        if (res.IsSuccessStatusCode)
-            //        {
-            //            Console.WriteLine($"update thành công");
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine("false");
-            //        }
-            //    }
-            //}
-            //if ()
-            return View();
+            string link = "https://localhost:7263/api/Users";
+            using (HttpClient client = new HttpClient())
+            {
+                using (HttpResponseMessage resget = await client.GetAsync(link + "/" + email + "/" + pass))
+                {
+                    string jsonResult = await resget.Content.ReadAsStringAsync();
+                    var resoult = JsonConvert.DeserializeObject<User>(jsonResult);
+                        if (resoult!= null)
+                        {
+                            ViewData["Error"] = "Email Đã Tồn Tại";
+                            return View("SignUp");
+                        }
+                        else
+                        {
+                            using (HttpResponseMessage res = await client.PostAsJsonAsync(link + "/" + email + "/" + pass, email))
+                            {
+                                if (res.IsSuccessStatusCode)
+                                {
+                                    ViewData["SignUp"] = "Đăng Ký Tài Khoản Thành Công";
+                                    return View("Index");
+                                }
+                                else
+                                {
+                                    ViewData["Error"] = "Vui Lòng Kiểm Tra Lại Thông Tin Đăng Nhập";
+                                    return View("SignUp");
+                                }
+                            }
+                        }
+                }
+            }
         }
     }
 }

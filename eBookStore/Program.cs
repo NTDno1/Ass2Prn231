@@ -15,22 +15,6 @@
             var app = builder.Build();
             app.UseSession(); // Kích hoạt phiên
 
-            // Định nghĩa các đường dẫn và xử lý yêu cầu
-
-            app.MapGet("/", async context =>
-            {
-                var session = context.Session;
-                session.SetString("Name", "John");
-                await context.Response.WriteAsync("Session value has been set.");
-            });
-
-            app.MapGet("/get", async context =>
-            {
-                var session = context.Session;
-                var name = session.GetString("Name");
-                await context.Response.WriteAsync($"Session value: {name}");
-            });
-
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
