@@ -75,5 +75,43 @@ namespace eBookStore.Controllers
 
             }
         }
+        public async Task<IActionResult> Delete(int id)
+        {
+            string name = HttpContext.Session.GetString("Name");
+            if (name == null)
+            {
+                return Redirect($"/Login");
+            }
+            else
+            {
+                List<Author> authors = new List<Author>();
+
+                string link = "https://localhost:7263/api/Authors?id=" +id;
+
+                using (HttpClient client = new HttpClient())
+                {
+                    using (HttpResponseMessage res = await client.GetAsync(link))
+                    {
+                        using (HttpContent content = res.Content)
+                        {
+                            string data = await content.ReadAsStringAsync();
+                            authors = JsonConvert.DeserializeObject<List<Author>>(data);
+                        }
+                    }
+                    using (HttpResponseMessage res = await client.DeleteAsync(link))
+                    {
+                        string links = link + "/" + id;
+                        if (res.IsSuccessStatusCode)
+                        {
+                            return View("Index", authors);
+                        }
+                        else
+                        {
+                            return Redirect($"/Login");
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace DataAsset.Repository
     public interface IAuthorRepository
     {
         public List<Author> getAll();
-        public Author getAuthorid(int id);  
+        public Author getAuthorid(int id);
+        public void DeleteAuthor(int id);
     }
 }

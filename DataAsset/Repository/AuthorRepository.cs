@@ -20,5 +20,25 @@ namespace DataAsset.Repository
             Author author = _db.Authors.FirstOrDefault(u => u.AuthorId == id);
             return author;
         }
+        public void DeleteAuthor(int id)
+        {
+            try
+            {
+                using (Assignment2Context context = new Assignment2Context())
+                {
+
+                    //check xem code có ?n t?i không
+                    context.Authors.Remove(context.Authors.Find(id));
+                    context.SaveChanges();
+                    //update thông tin cho student
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }

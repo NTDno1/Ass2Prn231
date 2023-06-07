@@ -1,11 +1,8 @@
 ﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHeplers
 @using BusinessObject.Models
 @model List<Author>
-@if (ViewData["Error"] != null)
-{
-    @if (ViewData["Error"].Equals("Edit"))
-    {
-    var author = ViewBag.Author as Author;
+
+    @{var author = ViewBag.Author as Author;}
         <form action="/action_page.php">
             <label for="fname">First name:</label>
             <input type="text" id="fname" name="fname" value="@(author != null ? author.FirstName : "")"><br><br>
@@ -18,24 +15,24 @@
             <input type="submit" value="Submit">
             <input type="button" value="Clear" id="myForm" onclick="clearForm()">
         </form> 
-    }
 
-}
 List Author:
 <table border="1">
     <tr>
-        <td>Author</td>
-        <td>AuthorName</td>
-        <td>City</td>
-        <td>Action</td>
+        <td>AuthorId<br /><input type="text" name="id"/></td>
+        <td>Firts Name<br /><input type="text" name="fname" /></td>
+        <td>Last Name <br /><input type="text" name="lname" /></td>
+        <td>City <br /><input type="text" name="fname" /></td>
+        <td>Action<br /> <b></b> </td>
     </tr>
     @foreach (Author item in Model)
     {
         <tr>
-            <td><a asp-action="Update" asp-route-id="@item.AuthorId">@item.AuthorId</a></td>
-            <td>@item.FirstName @item.LastName</td>
+            <td><a>@item.AuthorId</a></td>
+            <td>@item.FirstName</td>
+            <td>@item.LastName</td>
             <td>@item.City</td>
-            <td><a>Delete</a>|<a asp-action="Edit" asp-route-id="@item.AuthorId">Edit</a></td>
+            <td><a asp-action="Delete" asp-route-id="@item.AuthorId">Delete</a>|<a asp-action="Edit" asp-route-id="@item.AuthorId">Edit</a></td>
         </tr>
     }
 </table>

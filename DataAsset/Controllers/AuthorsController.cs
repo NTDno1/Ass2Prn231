@@ -87,24 +87,19 @@ namespace DataAsset.Controllers
         //}
 
         //// DELETE: api/Authors/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteAuthor(int id)
-        //{
-        //    if (_context.Authors == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var author = await _context.Authors.FindAsync(id);
-        //    if (author == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Authors.Remove(author);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                _context.DeleteAuthor(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
 
         //private bool AuthorExists(int id)
         //{
