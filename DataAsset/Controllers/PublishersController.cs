@@ -51,8 +51,37 @@ namespace DataAsset.Controllers
             return publisher;
         }
 
-        //// PUT: api/Publishers/5
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public IActionResult Post(string name, string city, string state, string country)
+        {
+
+            try
+            {
+                _context.AddPublisher(name,city,state,country);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        public IActionResult Put(int id, string name, string city, string state, string country)
+        {
+            try
+            {
+                _context.UpdatePublisher(id, name, city, state, country);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // PUT: api/Publishers/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         //[HttpPut("{id}")]
         //public async Task<IActionResult> PutPublisher(int id, Publisher publisher)
         //{
@@ -61,22 +90,22 @@ namespace DataAsset.Controllers
         //        return BadRequest();
         //    }
 
-        //    _context.Entry(publisher).State = EntityState.Modified;
+        //    _db.Entry(publisher).State = EntityState.Modified;
 
         //    try
         //    {
-        //        await _context.SaveChangesAsync();
+        //        await _db.SaveChangesAsync();
         //    }
         //    catch (DbUpdateConcurrencyException)
         //    {
-        //        if (!PublisherExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
+        //if (!PublisherExists(id))
+        //{
+        //    return NotFound();
+        //}
+        //else
+        //{
+        //    throw;
+        //}
         //    }
 
         //    return NoContent();

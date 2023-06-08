@@ -48,33 +48,32 @@ namespace DataAsset.Controllers
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        [HttpPut("{id}/{email}/{pass}")]
+        public async Task<IActionResult> PutUser(int id, string email, string pass)
         {
-            if (id != user.UserId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
             try
             {
+                User user = new User()
+                {
+                    UserId = id,
+                    EmailAddress = email,
+                    Password = pass,
+                    Source = "123",
+                    FirstName = "a",
+                    MiddleName = "b",
+                    LastName = "c",
+                    RoleId = 1,
+                    PubId = 1,
+                    HireDate = DateTime.Now,
+                };
+                _context.Users.Update(user);
                 await _context.SaveChangesAsync();
+                return NoContent();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return Ok(ex.GetBaseException);
             }
-
-            return NoContent();
         }
 
         // POST: api/Users

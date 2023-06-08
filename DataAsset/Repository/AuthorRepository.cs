@@ -40,5 +40,53 @@ namespace DataAsset.Repository
 
             }
         }
+        public void AddAuthor(string lastname, string firstname, string phone, string address, string city, string state, string zip, string email)
+        {
+            try
+            {
+                Author author = new Author()
+                {
+                    LastName = lastname,
+                    FirstName = firstname,
+                    Phone = phone,
+                    Address = address,
+                    City = city,
+                    State = state,
+                    Zip = zip,
+                    EmailAdress = email,
+                };
+                _db.Add(author);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public void UpdateAuthor(int id, string lastname, string firstname, string phone, string address, string city, string state, string zip, string email)
+        {
+            try
+            {
+                Author author = new Author()
+                {
+                    AuthorId = id,
+                    LastName = lastname,
+                    FirstName = firstname,
+                    Phone = phone,
+                    Address = address,
+                    City = city,
+                    State = state,
+                    Zip = zip,
+                    EmailAdress = email,
+                };
+                _db.Authors.Update(author);
+                _db.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }

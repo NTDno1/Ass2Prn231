@@ -40,6 +40,35 @@ namespace DataAsset.Controllers
             return users;
         }
 
+        [HttpPost]
+        public IActionResult Post(string lastname, string firstname, string phone, string address, string city, string state, string zip, string email)
+        {
+
+            try
+            {
+                _context.AddAuthor(lastname, firstname, phone, address, city, state, zip, email);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        public IActionResult Put(int id, string lastname, string firstname, string phone, string address, string city, string state, string zip, string email)
+        {
+            try
+            {
+                _context.UpdateAuthor(id, lastname, firstname, phone, address, city, state, zip, email);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         //// PUT: api/Authors/5
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         //[HttpPut("{id}")]

@@ -1,33 +1,94 @@
-﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHeplers
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using BusinessObject.Models
 @model List<Publisher>
 @{
     var publisher = ViewBag.Publisher as Publisher;
 }
-<form action="/action_page.php">
-    <label for="fname">First name:</label>
-    <input type="text" id="fname" name="fname" value="@(publisher != null ? publisher.PublisherName : "")"><br><br>
-    <label for="lname">Last name:</label>
-    <input type="text" id="lname" name="lname" value="@(publisher != null ? publisher.City : "")"><br><br>
-    <input type="submit" value="Submit">
-    <input type="button" value="Clear" id="myForm" onclick="clearForm()">
-</form>
-
-List Author:
-<table border="1">
-    <tr>
-        <td>PublisherId<br /><input type="text" id="myInput" onkeydown="handleKeyDown(event)" /></td>
-        <td>PublisherName<br /><input type="text" name="fname" /></td>
-        <td>City<br /><input type="text" name="lname" /></td>
-        <td>Action<br /> <b></b> </td>
-    </tr>
-    @foreach (Publisher item in Model)
-    {
-        <tr>
-            <td><a>@item.PubId</a></td>
-            <td>@item.PublisherName</td>
-            <td>@item.City</td>
-            <td><a asp-action="Delete" asp-route-id="@item.PubId">Delete</a>|<a asp-action="Edit" asp-route-id="@item.PubId">Edit</a></td>
-        </tr>
+<style>
+    /* CSS cho form */
+    form {
+        margin-bottom: 20px;
     }
-</table>
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input[type="text"] {
+        width: 200px;
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+
+    input[type="submit"],
+    input[type="button"] {
+        padding: 5px 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    input[type="button"] {
+        background-color: #f44336;
+    }
+
+    /* CSS cho table */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th,
+    td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<div class="container">
+    <form form asp-action="@(publisher != null ? "Update" : "Insert")" method="post">
+        <input hidden type="hidden" id="fname" name="id" value="@(publisher != null ? publisher.PubId : "")"><br>
+        <label for="fname">First name:</label>
+        <input type="text" id="fname" name="fname" value="@(publisher != null ? publisher.PublisherName : "")"><br>
+
+        <label for="lname">City:</label>
+        <input type="text" id="lname" name="city" value="@(publisher != null ? publisher.City : "")"><br>
+        <input type="submit" value="Submit">
+        <a asp-action="Index"><input type="button" value="Clear"></a>
+    </form>
+
+    <h3>List Publisher:</h3>
+    <table>
+        <tr>
+            <th>PublisherId</th>
+            <th>PublisherName</th>
+            <th>City</th>
+            <th>Action</th>
+        </tr>
+        @foreach (Publisher item in Model)
+        {
+            <tr>
+                <td><a>@item.PubId</a></td>
+                <td>@item.PublisherName</td>
+                <td>@item.City</td>
+                <td><a asp-action="Delete" asp-route-id="@item.PubId">Delete</a> | <a asp-action="Edit" asp-route-id="@item.PubId">Edit</a></td>
+            </tr>
+        }
+    </table>
+</div>
+
+<script>
+    // Các phần JavaScript ở đây...
+</script>

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace eBookStore.Controllers
 {
@@ -16,23 +17,8 @@ namespace eBookStore.Controllers
             }
             else
             {
-                List<Author> author = new List<Author>();
-
-                string link = "https://localhost:7263/api/Authors";
-
-                using (HttpClient client = new HttpClient())
-                {
-                    using (HttpResponseMessage res = await client.GetAsync(link))
-                    {
-                        using (HttpContent content = res.Content)
-                        {
-                            string data = await content.ReadAsStringAsync();
-                            author = JsonConvert.DeserializeObject<List<Author>>(data);
-
-                        }
-                    }
-                }
-                return View(author);
+                List<Author> authors = await GetAuthorsFromApi();
+                return View(authors);
             }
         }
         public async Task<IActionResult> Edit(int id)
@@ -44,35 +30,12 @@ namespace eBookStore.Controllers
             }
             else
             {
-                List<Author> authors = new List<Author>();
-                Author author = new Author();
+                List<Author> authors = await GetAuthorsFromApi();
+                Author author = await GetAuthorFromApi(id);
 
-                string link = "https://localhost:7263/api/Authors";
-
-                using (HttpClient client = new HttpClient())
-                {
-                    using (HttpResponseMessage res = await client.GetAsync(link))
-                    {
-                        using (HttpContent content = res.Content)
-                        {
-                            string data = await content.ReadAsStringAsync();
-                            authors = JsonConvert.DeserializeObject<List<Author>>(data);
-                        }
-                    }
-                    using (HttpResponseMessage res = await client.GetAsync(link+"/"+id))
-                    {
-                        using (HttpContent content = res.Content)
-                        {
-                            string data = await content.ReadAsStringAsync();
-                            author = JsonConvert.DeserializeObject<Author>(data);
-                        }
-                    }
-                }
-
-                ViewData["Error"] = "Edit";
+                //ViewData["Error"] = "Edit";
                 ViewBag.Author = author;
                 return View("Index",authors);
-
             }
         }
         public async Task<IActionResult> Delete(int id)
@@ -84,24 +47,14 @@ namespace eBookStore.Controllers
             }
             else
             {
-                List<Author> authors = new List<Author>();
-
                 string link = "https://localhost:7263/api/Authors";
-
                 using (HttpClient client = new HttpClient())
                 {
                     using (HttpResponseMessage res = await client.DeleteAsync(link+"?id="+id))
                     {
                         if (res.IsSuccessStatusCode)
                         {
-                            using (HttpResponseMessage ress = await client.GetAsync(link))
-                            {
-                                using (HttpContent content = ress.Content)
-                                {
-                                    string data = await content.ReadAsStringAsync();
-                                    authors = JsonConvert.DeserializeObject<List<Author>>(data);
-                                }
-                            }
+                            List<Author> authors = await GetAuthorsFromApi();
                             return View("Index", authors);
                         }
                         else
@@ -112,6 +65,70 @@ namespace eBookStore.Controllers
                 }
             }
         }
+        public async Task<IActionResult> Update(int id, string fname, string lname, string city, string email)
+        {
+            string link = "https://localhost:7263/api/Authors";
+            Author authors = await GetAuthorFromApi(id);
+            using (HttpClient client = new HttpClient())
+            {
+                using (HttpResponseMessage res = await client.PutAsync
+                (link + "?id="+ authors.AuthorId+"&lastname=" + lname + "&firstname=" + fname + "&phone=" + authors.Phone + "&address=" + authors.Address + "&city=" + city + "&state=" + authors.State + "&zip=" + authors.Zip + "&email=" + email + "", null))
+                {
+                }
+            }
+            Author author = await GetAuthorFromApi(id);
+            List<Author> authorss = await GetAuthorsFromApi();
+            ViewBag.Author = author;
+            return View("Index", authorss);
+        }
+        public async Task<IActionResult> Insert(string fname, string lname, string city, string email)
+        {
+            string link = "https://localhost:7263/api/Authors";
+            using (HttpClient client = new HttpClient())
+            {
+                using (HttpResponseMessage res = await client.PostAsync
+                (link + "?lastname="+lname+"&firstname="+fname+"&phone=000&address=Hanoi&city=HaNoi&state=1&zip=1&email="+email+"", null))
+                {
+                }
+            }
+            List<Author> authorss = await GetAuthorsFromApi();
+            return View("Index", authorss);
+        }
+        public async Task<List<Author>> GetAuthorsFromApi()
+        {
+            List<Author> authors = new List<Author>();
 
+            string link = "https://localhost:7263/api/Authors";
+
+            using (HttpClient client = new HttpClient())
+            {
+                using (HttpResponseMessage res = await client.GetAsync(link))
+                {
+                    using (HttpContent content = res.Content)
+                    {
+                        string data = await content.ReadAsStringAsync();
+                        authors = JsonConvert.DeserializeObject<List<Author>>(data);
+                    }
+                }
+            }
+            return authors;
+        }
+        public async Task<Author> GetAuthorFromApi(int id)
+        {
+            Author author = new Author();
+            string link = "https://localhost:7263/api/Authors";
+            using (HttpClient client = new HttpClient())
+            {
+                using (HttpResponseMessage res = await client.GetAsync(link + "/" + id))
+                {
+                    using (HttpContent content = res.Content)
+                    {
+                        string data = await content.ReadAsStringAsync();
+                        author = JsonConvert.DeserializeObject<Author>(data);
+                    }
+                }
+            }
+            return author;
+        }
     }
 }

@@ -7,5 +7,7 @@ namespace DataAsset.Repository
         List<Publisher> GetList();
         public Publisher getPublisherId(int id);
         public void DeletePublisher(int id);
+        public void UpdatePublisher(int id, string name, string city, string state, string country);
+        public void AddPublisher(string name, string city, string state, string country);
     }
 }
