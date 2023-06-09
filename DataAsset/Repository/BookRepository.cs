@@ -14,5 +14,10 @@ namespace DataAsset.Repository
             List<Book> books = _db.Books.ToList();
             return books;
         }
+        public List<Book> getListByName(string title)
+        {
+            List<Book> books = _db.Books.Where(u=>u.Title.Contains(title)).ToList();
+            return books;
+        }
     }
 }

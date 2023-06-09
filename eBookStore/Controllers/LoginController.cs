@@ -57,11 +57,13 @@ namespace eBookStore.Controllers
             {
                 using (HttpResponseMessage resget = await client.GetAsync(link + "/" + email + "/" + pass))
                 {
+                    string lins = link + "/" + email + "/" + pass;
                     string jsonResult = await resget.Content.ReadAsStringAsync();
-                    var resoult = JsonConvert.DeserializeObject<User>(jsonResult);
-                        if (resoult!= null)
+                    User resoult = JsonConvert.DeserializeObject<User>(jsonResult);
+                    //string name = resoult.EmailAddress.ToString();
+                    if (resoult.EmailAddress!= null)
                         {
-                            ViewData["Error"] = "Email Đã Tồn Tại";
+                        ViewData["Error"] = "Email Đã Tồn Tại";
                             return View("SignUp");
                         }
                         else

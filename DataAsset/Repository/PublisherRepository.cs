@@ -19,6 +19,11 @@ namespace DataAsset.Repository
             Publisher publisher = _db.Publishers.FirstOrDefault(u => u.PubId == id); 
             return publisher;
         }
+        public List<Publisher> getPubByValue(string name, string city )
+        {
+           List<Publisher> publisher = _db.Publishers.Where(u=>u.PublisherName.Contains(name) || u.City.Contains(city)).ToList();
+            return publisher;
+        }
         public void DeletePublisher(int id)
         {
             try

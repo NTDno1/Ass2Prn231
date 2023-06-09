@@ -50,6 +50,23 @@ namespace DataAsset.Controllers
 
             return publisher;
         }
+        // GET: api/Publishers/5
+        [HttpGet("{name}/{city}")]
+        public async Task<ActionResult<List<Publisher>>> GetPublisher(string name, string city)
+        {
+            if (_context.getPublisherId == null)
+            {
+                return NotFound();
+            }
+            var publisher = _context.getPubByValue(name, city); 
+
+            if (publisher == null)
+            {
+                return NotFound();
+            }
+
+            return publisher;
+        }
 
         [HttpPost]
         public IActionResult Post(string name, string city, string state, string country)

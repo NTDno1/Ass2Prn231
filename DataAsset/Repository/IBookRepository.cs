@@ -9,5 +9,6 @@ namespace DataAsset.Repository
     public interface IBookRepository
     {
         List<Book> getList();
+        public List<Book> getListByName(string title);
     }
 }

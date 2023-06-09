@@ -40,6 +40,13 @@ namespace DataAsset.Controllers
             return users;
         }
 
+        [HttpGet("{lastname}/{firstname}/{city}")]
+        public async Task<ActionResult<List<Author>>> GetAuthorValue(string lastname, string firstname, string city)
+        {
+            var author = _context.SearchValue(lastname,firstname,city);
+            return author;
+        }
+
         [HttpPost]
         public IActionResult Post(string lastname, string firstname, string phone, string address, string city, string state, string zip, string email)
         {

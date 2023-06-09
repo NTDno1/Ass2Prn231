@@ -32,23 +32,13 @@ namespace DataAsset.Controllers
             return  _context.getList();
         }
 
-        //// GET: api/Books/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Book>> GetBook(int id)
-        //{
-        //  if (_context.Books == null)
-        //  {
-        //      return NotFound();
-        //  }
-        //    var book = await _context.Books.FindAsync(id);
-
-        //    if (book == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return book;
-        //}
+        // GET: api/Books/5
+        [HttpGet("{title}")]
+        public async Task<ActionResult<Book>> GetBook(string title)
+        {
+            var books = _context.getListByName(title);
+            return Ok(books);
+        }
 
         //// PUT: api/Books/5
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

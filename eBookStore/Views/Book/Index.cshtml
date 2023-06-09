@@ -1,8 +1,8 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using BusinessObject.Models
-@model List<Publisher>
+@model List<Book>
 @{
-    var publisher = ViewBag.Publisher as Publisher;
+    var value = ViewBag.String;
 }
 <style>
     /* CSS cho form */
@@ -102,51 +102,38 @@
     }
 </style>
 <div style="display:flex">
- <div class="left-content">
+    <div class="left-content">
         <a href="#" class="link">Welcome</a>
         <a href="#" class="link">Hover over me!</a>
- </div>
-<div class="container">
-    <form form asp-action="@(publisher != null ? "Update" : "Insert")" method="post">
-        <input hidden type="hidden" id="fname" name="id" value="@(publisher != null ? publisher.PubId : "")"><br>
-        <label for="fname">First name:</label>
-        <input type="text" id="fname" name="fname" value="@(publisher != null ? publisher.PublisherName : "")"><br>
-
-        <label for="lname">City:</label>
-        <input type="text" id="lname" name="city" value="@(publisher != null ? publisher.City : "")"><br>
-        <input type="submit" value="Submit">
-        <a asp-action="Index"><input type="button" value="Clear"></a>
-    </form>
-
-    <h3>List Publisher:</h3>
-    <table>
-        <tr>
-            <th>PublisherId</th>
-            <form form asp-action="SearchValue" method="post">
-            <th>PublisherName <br />
-                <input type="text" value="" name="name" />
-            </th>
-                <th>
-                    City<br />
-                    <input type="text" value="" name="city" />
-                </th>
-                <th>Action<br />
-                    <input type="submit" value="Search" /></th>
-            </form>
-        </tr>
-        @foreach (Publisher item in Model)
-        {
+    </div>
+    <div class="container">
+        <form asp-action="Search" method="post">
+            <label for="lname">Search</label>
+            <input type="text" id="lname" name="title" value="@(value != null ? value : "")"><br>
+            <input type="submit" value="Search">
+        </form>
+        <h3>List Author:</h3>
+        <table>
             <tr>
-                <td><a>@item.PubId</a></td>
-                <td>@item.PublisherName</td>
-                <td>@item.City</td>
-                <td><a asp-action="Delete" asp-route-id ="@item.PubId">Delete</a> | <a asp-action="Edit" asp-route-id="@item.PubId">Edit</a></td>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Price
+                <th>
+                    Royalty
+                </th>
+                <th>Action</th>
             </tr>
-        }
-    </table>
+            @foreach (Book item in Model)
+            {
+                <tr>
+                    <td><a>@item.Title</a></td>
+                    <td>@item.Price</td>
+                    <td>@item.Royalty</td>
+                    <td><a>Delete</a> | <a>Edit</a></td>
+                </tr>
+            }
+        </table>
+    </div>
 </div>
-</div>
-
-<script>
-    // Các phần JavaScript ở đây...
-</script>

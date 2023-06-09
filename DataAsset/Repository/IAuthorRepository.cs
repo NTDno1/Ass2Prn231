@@ -9,5 +9,6 @@ namespace DataAsset.Repository
         public void DeleteAuthor(int id);
         public void AddAuthor(string lastname, string firstname, string phone, string address, string city, string state, string zip, string email);
         public void UpdateAuthor(int id, string lastname, string firstname, string phone, string address, string city, string state, string zip, string email);
+        public List<Author> SearchValue(string lastname, string firstname, string city);
     }
 }

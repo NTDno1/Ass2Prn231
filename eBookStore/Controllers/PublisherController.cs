@@ -93,6 +93,25 @@ namespace eBookStore.Controllers
             List<Publisher> publishers = await GetPublisherFromApi();
             return View("Index", publishers);
         }
+        public async Task<IActionResult> SearchValue(string name, string city)
+        {
+            List<Publisher> publishers = new List<Publisher>();
+
+            string link = "https://localhost:7263/api/Publishers";
+            using (HttpClient client = new HttpClient())
+            {
+                using (HttpResponseMessage res = await client.GetAsync(link + "/" + name + "/" + city))
+                {
+                    using (HttpContent content = res.Content)
+                    {
+                        string data = await content.ReadAsStringAsync();
+                        publishers = JsonConvert.DeserializeObject<List<Publisher>>(data);
+                    }
+                }
+            }
+            ViewData["city"] = city;
+            return View("Index", publishers);
+        }
         public async Task<List<Publisher>> GetPublisherFromApi()
         {
             List<Publisher> publishers = new List<Publisher>();

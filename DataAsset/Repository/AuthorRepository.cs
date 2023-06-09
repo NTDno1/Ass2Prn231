@@ -12,8 +12,8 @@ namespace DataAsset.Repository
 
         public List<Author> getAll()
         {
-            List<Author> books = _db.Authors.ToList();
-            return books;
+            List<Author> author = _db.Authors.ToList();
+            return author;
         }
         public Author getAuthorid(int id)
         {
@@ -87,6 +87,12 @@ namespace DataAsset.Repository
             {
 
             }
+        }
+
+        public List<Author> SearchValue(string lastname, string firstname, string city)
+        {
+            List<Author> author = _db.Authors.Where(u => u.LastName.Contains(lastname) || u.FirstName.Contains(firstname)|| u.City.Contains(city)).ToList();
+            return author;
         }
     }
 }
