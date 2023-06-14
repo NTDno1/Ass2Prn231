@@ -103,27 +103,36 @@
 </style>
 <div style="display:flex">
     <div class="left-content">
-        <a href="#" class="link">Welcome</a>
-        <a href="#" class="link">Hover over me!</a>
+        <a href="/Author" class="link">Author</a>
+        <a href="/Publisher" class="link">Publisher</a>
+        <a href="/Book" class="link">Book</a>
+        <a href="/Login" class="link">LogOut</a>
     </div>
     <div class="container">
-        <form asp-action="@(author != null ? "Update" : "Insert")" method="post">
-            <input hidden type="hidden" id="fname" name="id" value="@(author != null ? author.AuthorId : "")"><br>
-            <label for="fname">First name:</label>
-            <input type="text" id="fname" name="fname" value="@(author != null ? author.FirstName : "")"><br>
+       @* @if (ViewData["isAdmin"] != null)
+        {*@
+            <form asp-action="@(author != null ? "Update" : "Insert")" method="post">
+                <input hidden type="hidden" id="fname" name="id" value="@(author != null ? author.AuthorId : "")"><br>
+                <label for="fname">First name:</label>
+                <input type="text" id="fname" name="fname" value="@(author != null ? author.FirstName : "")"><br>
 
-            <label for="lname">Last name:</label>
-            <input type="text" id="lname" name="lname" value="@(author != null ? author.LastName : "")"><br>
+                <label for="lname">Last name:</label>
+                <input type="text" id="lname" name="lname" value="@(author != null ? author.LastName : "")"><br>
 
-            <label for="lname">City:</label>
-            <input type="text" id="lname" name="city" value="@(author != null ? author.City : "")"><br>
+                <label for="lname">City:</label>
+                <input type="text" id="lname" name="city" value="@(author != null ? author.City : "")"><br>
 
-            <label for="lname">Email Address:</label>
-            <input type="text" id="lname" name="email" value="@(author != null ? author.EmailAdress : "")"><br>
+                <label for="lname">Email Address:</label>
+                <input type="email" id="lname" name="email" value="@(author != null ? author.EmailAdress : "")"><br>
 
-            <input type="submit" value="Submit">
-            <a asp-action="Index"><input type="button" value="Clear"></a>
-        </form>
+                <input type="submit" value="Submit">
+                <a asp-action="Index"><input type="button" value="Clear"></a>
+            </form>
+        @*}*@
+        <h3>@if (ViewData["InsertErr"] != null)
+            {
+                @ViewData["InsertErr"]
+            }</h3>
 
         <h3>List Author:</h3>
         <table>
@@ -132,25 +141,19 @@
                     AuthorId <br />
                 </th>
 
-                <form asp-action="SearchValue" method="post">
+                <form asp-action="SearchValues" method="post">
                 <th>
                     Firts Name<br />
-                    <input type="text" name="fname" value="@if (ViewData["fname"] != null){
-                        @ViewData["fname"]
-}" />
+                    <input type="text" name="fname" value="@if (ViewData["fname"] != null){@ViewData["fname"]}" />
                 </th>
 
                 <th>
                     Last Name <br />
-                    <input type="text" name="lname" value="@if (ViewData["lname"] != null){
-                        @ViewData["lname"]
-}" />
+                    <input type="text" name="lname" value="@if (ViewData["lname"] != null){@ViewData["lname"]}" />
                 </th>
                 <th>
                     City<br />
-                    <input type="text" name="city" value="@if (ViewData["city"] != null){
-                        @ViewData["city"]
-}" />
+                    <input type="text" name="city" value="@if (ViewData["city"] != null){@ViewData["city"]}" />
                 </th>
                 <th>
                     Action<br />
@@ -165,7 +168,10 @@
                     <td>@item.FirstName</td>
                     <td>@item.LastName</td>
                     <td>@item.City</td>
-                    <td><a asp-action="Delete" asp-route-id="@item.AuthorId">Delete</a> | <a asp-action="Edit" asp-route-id="@item.AuthorId">Edit</a></td>
+                @*    @if (ViewData["isAdmin"] != null)
+                    {*@
+                        <td><a asp-action="Delete" asp-route-id="@item.AuthorId">Delete</a> | <a asp-action="Edit" asp-route-id="@item.AuthorId">Edit</a></td>
+                    @*}*@
                 </tr>
             }
         </table>
@@ -173,6 +179,3 @@
 </div>
 
 
-<script>
-    // Các phần JavaScript ở đây...
-</script>

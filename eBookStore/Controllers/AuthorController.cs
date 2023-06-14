@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
+using System.Xml.Linq;
 
 namespace eBookStore.Controllers
 {
@@ -11,19 +12,35 @@ namespace eBookStore.Controllers
         public async Task<IActionResult> Index()
         {
             string name = HttpContext.Session.GetString("Name");
+            int? roleId = HttpContext.Session.GetInt32("Role");
             if (name == null)
             {
                 return Redirect($"/Login");
             }
             else
             {
-                List<Author> authors = await GetAuthorsFromApi();
-                return View(authors);
+                if(roleId == 1)
+                {
+                    List<Author> authors = await GetAuthorsFromApi();
+                    return View(authors);
+                }
+                if(roleId == 2)
+                {
+                    ViewData["isAdmin"] = name;
+                    List<Author> authors = await GetAuthorsFromApi();
+                    return View(authors);
+                }
+                else
+                {
+                    return Redirect($"/Login");
+                }
             }
         }
         public async Task<IActionResult> Edit(int id)
         {
+
             string name = HttpContext.Session.GetString("Name");
+            int? roleId = HttpContext.Session.GetInt32("Role");
             if (name == null)
             {
                 return Redirect($"/Login");
@@ -36,11 +53,13 @@ namespace eBookStore.Controllers
                 //ViewData["Error"] = "Edit";
                 ViewBag.Author = author;
                 return View("Index",authors);
+
             }
         }
         public async Task<IActionResult> Delete(int id)
         {
             string name = HttpContext.Session.GetString("Name");
+            int? roleId = HttpContext.Session.GetInt32("Role");
             if (name == null)
             {
                 return Redirect($"/Login");
@@ -67,6 +86,13 @@ namespace eBookStore.Controllers
         }
         public async Task<IActionResult> Update(int id, string fname, string lname, string city, string email)
         {
+            if (fname == null || lname == null || city == null || email == null)
+            {
+                ViewData["InsertErr"] = "Bạn Cần Nhập Đủ Thông Tin ";
+                List<Author> authorsss = await GetAuthorsFromApi();
+                return View("Index", authorsss);
+
+            }
             string link = "https://localhost:7263/api/Authors";
             Author authors = await GetAuthorFromApi(id);
             using (HttpClient client = new HttpClient())
@@ -83,6 +109,12 @@ namespace eBookStore.Controllers
         }
         public async Task<IActionResult> Insert(string fname, string lname, string city, string email)
         {
+            if(fname == null || lname == null || city== null || email == null) {
+                ViewData["InsertErr"] = "Bạn Cần Nhập Đủ Thông Tin ";
+                List<Author> authorsss = await GetAuthorsFromApi();
+                return View("Index", authorsss);
+
+            }
             string link = "https://localhost:7263/api/Authors";
             using (HttpClient client = new HttpClient())
             {
@@ -98,48 +130,91 @@ namespace eBookStore.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> SearchValue(string fname, string lname, string city)
+        public async Task<IActionResult> SearchValues(string fname, string lname, string city)
         {
-            List<Author> authors = new List<Author>();
-
-            string link = "https://localhost:7263/api/Authors";
-            List<String> value = new List<string> { fname, lname, city };
-            String name = value[1];
-            using (HttpClient client = new HttpClient())
+            if(fname==null && lname ==null && city==null)
             {
-                using (HttpResponseMessage res = await client.GetAsync(link+"/"+lname+"/"+fname+"/"+city))
+                List<Author> authorss = await GetAuthorsFromApi();
+                ViewData["fname"] = fname;
+                    ViewData["lname"] = lname;
+                    ViewData["city"] = city;
+                    return View("Index", authorss);
+            }
+            //if(fname == null)
+            //{
+            //    fname = "   ";
+            //}
+            //if (lname == null)
+            //{
+            //    lname = "   ";
+            //}
+            //if(city == null)
+            //{
+            //    city = "   ";
+            //}
+            string name = HttpContext.Session.GetString("Name");
+            int? roleId = HttpContext.Session.GetInt32("Role");
+            if (name == null)
+            {
+                return Redirect($"/Login");
+            }
+            else
+            {
+                List<Author> authors = new List<Author>();
+
+                string link = "https://localhost:7263/api/Authors";
+                using (HttpClient client = new HttpClient())
                 {
-                    using (HttpContent content = res.Content)
+                    using (HttpResponseMessage res = await client.GetAsync(link + "/" + lname + "/" + fname + "/" + city))
                     {
-                        string data = await content.ReadAsStringAsync();
-                        authors = JsonConvert.DeserializeObject<List<Author>>(data);
+                        string licks = link + "/" + lname + "/" + fname + "/" + city;
+                        using (HttpContent content = res.Content)
+                        {
+                            string data = await content.ReadAsStringAsync();
+                            authors = JsonConvert.DeserializeObject<List<Author>>(data);
+                        }
                     }
                 }
-            }
-            ViewData["fname"] = fname;
-            ViewData["lname"] = lname;
-            ViewData["city"] = city;
-            return View("Index", authors);
-        }
-        public async Task<IActionResult> SearchValue(int id)
-        {
-            List<Author> authors = new List<Author>();
-
-            string link = "https://localhost:7263/api/Authors";
-            using (HttpClient client = new HttpClient())
-            {
-                using (HttpResponseMessage res = await client.GetAsync(link + "/" + id))
+                if (roleId == 1)
                 {
-                    using (HttpContent content = res.Content)
-                    {
-                        string data = await content.ReadAsStringAsync();
-                        authors = JsonConvert.DeserializeObject<List<Author>>(data);
-                    }
+                    ViewData["fname"] = fname;
+                    ViewData["lname"] = lname;
+                    ViewData["city"] = city;
+                    return View("Index", authors);
+                }
+                if (roleId == 2)
+                {
+                    ViewData["fname"] = fname;
+                    ViewData["lname"] = lname;
+                    ViewData["city"] = city;
+                    ViewData["isAdmin"] = name;
+                    return View("Index", authors);
+                }
+                else
+                {
+                    return Redirect($"/Login");
                 }
             }
-            ViewData["fname"] = id ;
-            return View("Index", authors);
         }
+        //public async Task<IActionResult> SearchValue(int id)
+        //{
+        //    List<Author> authors = new List<Author>();
+
+        //    string link = "https://localhost:7263/api/Authors";
+        //    using (HttpClient client = new HttpClient())
+        //    {
+        //        using (HttpResponseMessage res = await client.GetAsync(link + "/" + id))
+        //        {
+        //            using (HttpContent content = res.Content)
+        //            {
+        //                string data = await content.ReadAsStringAsync();
+        //                authors = JsonConvert.DeserializeObject<List<Author>>(data);
+        //            }
+        //        }
+        //    }
+        //    ViewData["fname"] = id ;
+        //    return View("Index", authors);
+        //}
         public async Task<List<Author>> GetAuthorsFromApi()
         {
             List<Author> authors = new List<Author>();

@@ -1,22 +1,37 @@
 ﻿using BusinessObject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Xml.Linq;
 
 namespace eBookStore.Controllers
 {
     public class PublisherController : Controller
     {
-        public async Task< IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             string name = HttpContext.Session.GetString("Name");
+            int? roleId = HttpContext.Session.GetInt32("Role");
             if (name == null)
             {
                 return Redirect($"/Login");
             }
             else
             {
-                List<Publisher> publishers = await GetPublisherFromApi();
-                return View(publishers);
+                if (roleId == 1)
+                {
+                    List<Publisher> publishers = await GetPublisherFromApi();
+                    return View(publishers);
+                }
+                if (roleId == 2)
+                {
+                    ViewData["isAdmin"] = name;
+                    List<Publisher> publishers = await GetPublisherFromApi();
+                    return View(publishers);
+                }
+                else
+                {
+                    return Redirect($"/Login");
+                }
             }
         }
         public async Task<IActionResult> Edit(int id)
@@ -64,14 +79,14 @@ namespace eBookStore.Controllers
                 }
             }
         }
-        public async Task<IActionResult> Update(int id, string fname,string city)
+        public async Task<IActionResult> Update(int id, string fname, string city)
         {
             string link = "https://localhost:7263/api/Publishers";
             Publisher publisher = await GetPublisherIdFromApi(id);
             using (HttpClient client = new HttpClient())
             {
                 using (HttpResponseMessage res = await client.PutAsync
-                (link + "?id="+ id + "&name="+fname+"&city="+city+"&state="+publisher.State+"&country="+publisher.Country, null))
+                (link + "?id=" + id + "&name=" + fname + "&city=" + city + "&state=" + publisher.State + "&country=" + publisher.Country, null))
                 {
                 }
             }
@@ -86,7 +101,7 @@ namespace eBookStore.Controllers
             using (HttpClient client = new HttpClient())
             {
                 using (HttpResponseMessage res = await client.PostAsync
-                (link + "?name="+fname+"&city="+city+"&state=single&country=Vietnam", null))
+                (link + "?name=" + fname + "&city=" + city + "&state=single&country=Vietnam", null))
                 {
                 }
             }
@@ -95,22 +110,46 @@ namespace eBookStore.Controllers
         }
         public async Task<IActionResult> SearchValue(string name, string city)
         {
-            List<Publisher> publishers = new List<Publisher>();
-
-            string link = "https://localhost:7263/api/Publishers";
-            using (HttpClient client = new HttpClient())
+            string names = HttpContext.Session.GetString("Name");
+            int? roleId = HttpContext.Session.GetInt32("Role");
+            if (names == null)
             {
-                using (HttpResponseMessage res = await client.GetAsync(link + "/" + name + "/" + city))
+                return Redirect($"/Login");
+            }
+            else
+            {
+                List<Publisher> publishers = new List<Publisher>();
+
+                string link = "https://localhost:7263/api/Publishers";
+                using (HttpClient client = new HttpClient())
                 {
-                    using (HttpContent content = res.Content)
+                    using (HttpResponseMessage res = await client.GetAsync(link + "/" + name + "/" + city))
                     {
-                        string data = await content.ReadAsStringAsync();
-                        publishers = JsonConvert.DeserializeObject<List<Publisher>>(data);
+                        using (HttpContent content = res.Content)
+                        {
+                            string data = await content.ReadAsStringAsync();
+                            publishers = JsonConvert.DeserializeObject<List<Publisher>>(data);
+                        }
                     }
                 }
+                if (roleId == 1)
+                {
+                    ViewData["city"] = city;
+                    ViewData["name"] = name;
+                    return View("Index", publishers);
+                }
+                if (roleId == 2)
+                {
+                    ViewData["isAdmin"] = name;
+                    ViewData["city"] = city;
+                    ViewData["name"] = name;
+                    return View("Index", publishers);
+                }
+                else
+                {
+                    return Redirect($"/Login");
+                }
             }
-            ViewData["city"] = city;
-            return View("Index", publishers);
         }
         public async Task<List<Publisher>> GetPublisherFromApi()
         {

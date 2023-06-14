@@ -40,20 +40,26 @@ namespace DataAsset.Controllers
             return users;
         }
 
-        [HttpGet("{lastname}/{firstname}/{city}")]
-        public async Task<ActionResult<List<Author>>> GetAuthorValue(string lastname, string firstname, string city)
+        [HttpGet("list/{ids}")]
+        public async Task<ActionResult<List<Author>>> GetListAuthor(int ids)
+        {
+            var users = _context.SearchAuthorById(ids);
+            return users;
+        }
+
+        [HttpGet("{lastname?}/{firstname?}/{city?}")]
+        public async Task<ActionResult<List<Author>>> GetAuthorValue(string? lastname, string? firstname, string? city)
         {
             var author = _context.SearchValue(lastname,firstname,city);
             return author;
         }
 
         [HttpPost]
-        public IActionResult Post(string lastname, string firstname, string phone, string address, string city, string state, string zip, string email)
+        public IActionResult Post(AuthorCreateDTO authorCreateDTO)
         {
-
             try
             {
-                _context.AddAuthor(lastname, firstname, phone, address, city, state, zip, email);
+                _context.AddAuthor(authorCreateDTO);
                 return Ok();
             }
             catch (Exception ex)

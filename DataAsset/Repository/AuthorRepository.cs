@@ -40,20 +40,20 @@ namespace DataAsset.Repository
 
             }
         }
-        public void AddAuthor(string lastname, string firstname, string phone, string address, string city, string state, string zip, string email)
+        public void AddAuthor(AuthorCreateDTO authorCreate)
         {
             try
             {
                 Author author = new Author()
                 {
-                    LastName = lastname,
-                    FirstName = firstname,
-                    Phone = phone,
-                    Address = address,
-                    City = city,
-                    State = state,
-                    Zip = zip,
-                    EmailAdress = email,
+                    LastName = authorCreate.LastName,
+                    FirstName = authorCreate.FirstName,
+                    Phone = authorCreate.Phone,
+                    Address = authorCreate.Address,
+                    City = authorCreate.City,
+                    State = authorCreate.State,
+                    Zip = authorCreate.Zip,
+                    EmailAdress = authorCreate.EmailAdress,
                 };
                 _db.Add(author);
                 _db.SaveChanges();
@@ -89,10 +89,18 @@ namespace DataAsset.Repository
             }
         }
 
-        public List<Author> SearchValue(string lastname, string firstname, string city)
+        public List<Author> SearchValue(string? lastname, string? firstname, string? city)
         {
-            List<Author> author = _db.Authors.Where(u => u.LastName.Contains(lastname) || u.FirstName.Contains(firstname)|| u.City.Contains(city)).ToList();
+            //List<Author> list = new List<Author>();
+            List<Author> author = _db.Authors.Where(u => u.LastName.Contains(lastname??"") || u.FirstName.Contains(firstname??"")|| u.City.Contains(city ?? "")).ToList();
+
             return author;
+        }
+        public List<Author> SearchAuthorById(int id)
+        {
+            List<Author> authors = _db.Authors.Where(u => u.AuthorId == id).ToList();
+            return authors;
         }
     }
 }
+      
